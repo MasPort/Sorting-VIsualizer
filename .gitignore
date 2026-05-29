@@ -1,0 +1,4 @@
+build/
+raylib/
+run.sh
+.cache/

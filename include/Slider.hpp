@@ -6,17 +6,20 @@ class Slider {
         Slider(Rectangle rect, Color color, int lineThicknes, Vector2 range, int startValue);
 
         void Draw();
-        void Update(int &result);
+        void Resize(Rectangle newRect);
+        void onSliding(Vector2 mousePos);
 
     private:
         Rectangle RECT;
-        Rectangle slideBox;
+        Rectangle handleBox;
         Color color;
         Vector2 range;
         int lineThickness;
 
         int value;
+        bool sliding;
 
         float getValuePercentage();
-        bool isHovered();
+        void setValueWithPercentage(double percentage);
+        bool isHovered(Vector2 mousePos);
 };

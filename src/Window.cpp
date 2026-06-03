@@ -1,4 +1,6 @@
 #include "../include/Window.hpp"
+#include <iostream>
+#include <raylib.h>
 
 Window::Window(int width, int height, const char *title, const float visPercent) : width(width), height(height), title(title), visPercent(visPercent)
 {
@@ -9,6 +11,8 @@ Window::Window(int width, int height, const char *title, const float visPercent)
 
     vis = new Visualizer();
     vis->RandomizeArray();
+    
+    sizeSlider = new Slider(Rectangle{0, 0, 0, 0}, WHITE, 3, {10, 1000}, 100);
 }
 
 void Window::Draw()
@@ -18,9 +22,10 @@ void Window::Draw()
 
     float xPadding = lineThickness + 10; float yPadding = lineThickness + optionsRect.height / 4;
     Rectangle sliderRect{optionsRect.x + xPadding, yPadding, 400, optionsRect.height - yPadding * 2};
-    sizeSlider = new Slider(sliderRect, WHITE, lineThickness, {10, 1000}, 100);
+    sizeSlider->Resize(sliderRect);
 
     sizeSlider->Draw();
+    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) || IsMouseButtonUp(MOUSE_BUTTON_LEFT)) sizeSlider->onSliding(GetMousePosition());
 
     algorithmsRect = Rectangle{ 0, 0, rectPercent * width, (float)height };
 

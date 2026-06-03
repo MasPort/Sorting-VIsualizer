@@ -11,15 +11,13 @@ int main() {
     Window window(WIDTH, HEIGHT, TITLE, VISUALIZATION_PERCENTAGE);
 
     while (!WindowShouldClose()) {
+        ClearBackground(BLACK);
+
         BeginDrawing();
-
-        window.Draw();
-
         if (IsWindowResized()) window.Resize();
 
+        window.Draw();
         EndDrawing();
-
-        ClearBackground(BLACK);
     }
 
     CloseWindow();

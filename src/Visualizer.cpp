@@ -1,6 +1,6 @@
 #include "../include/Visualizer.hpp"
 
-Visualizer::Visualizer() : arraySize(50), sorting(false) {}
+Visualizer::Visualizer() : arraySize(0), sorting(false) {}
 
 void Visualizer::RandomizeArray() {
     std::mt19937 generator;

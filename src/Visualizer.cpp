@@ -16,7 +16,7 @@ void Visualizer::Resize(int size) {
     RandomizeArray();
 }
 
-bool Visualizer::isSorting() const { return sorting; }
+bool Visualizer::shouldSorting(bool shouldSort) const { return sorting; }
 
 bool Visualizer::isSorted() const {
     for (int i = 1; i < arraySize; ++i) 

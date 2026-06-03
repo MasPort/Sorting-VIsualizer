@@ -13,6 +13,7 @@ Window::Window(int width, int height, const char *title, const float visPercent)
     vis->RandomizeArray();
     
     sizeSlider = new Slider(Rectangle{0, 0, 0, 0}, WHITE, 3, {10, 1000}, 100);
+    startSorting = new ToggleButton(Rectangle{0, 0, 0, 0}, WHITE, 3, "Stop", "Start");
 }
 
 void Window::Draw()
@@ -21,18 +22,28 @@ void Window::Draw()
     optionsRect = Rectangle{ rectPercent * width - lineThickness, 0, visPercent * width, rectPercent * height };
 
     float xPadding = lineThickness + 10; float yPadding = lineThickness + optionsRect.height / 4;
-    Rectangle sliderRect{optionsRect.x + xPadding, yPadding, 400, optionsRect.height - yPadding * 2};
-    sizeSlider->Resize(sliderRect);
+    Rectangle sliderRect{optionsRect.x + xPadding, yPadding, 400, optionsRect.height - yPadding * 2}; 
+    sizeSlider->Resize(sliderRect); 
+    sizeSlider->Draw(); 
 
-    sizeSlider->Draw();
-    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) || IsMouseButtonUp(MOUSE_BUTTON_LEFT)) 
-        sizeSlider->onSliding(GetMousePosition());
+    int fontSize = 96;
+    Rectangle startButtonRect{sliderRect.x + sliderRect.width + xPadding * 2, yPadding, (float)MeasureText("Start", fontSize), (float)fontSize};
+
+    startSorting->Resize(startButtonRect);
+    startSorting->Draw();
 
     algorithmsRect = Rectangle{ 0, 0, rectPercent * width, (float)height };
 
     DrawRectangleLinesEx(optionsRect, lineThickness, WHITE);
     DrawRectangleLinesEx(algorithmsRect, lineThickness, WHITE);
 
+    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) || IsMouseButtonUp(MOUSE_BUTTON_LEFT)) 
+        sizeSlider->onSliding(GetMousePosition());
+
+    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+        startSorting->onPress(GetMousePosition());
+    }
+    
     DrawArray(); 
 }
 
@@ -42,7 +53,8 @@ void Window::DrawArray() {
 
     if (sizeSlider->getValue() != vis->getArraySize()) vis->Resize(sizeSlider->getValue());
 
-    if (!vis->isSorting()) {
+    if (true) {
+        if (startSorting->isActivated()) vis->RandomizeArray();
         int maxSize = vis->getArraySize();
         float x_step = sortWidth / maxSize;
 

@@ -1,6 +1,7 @@
 #include <raylib.h>
 #include "Visualizer.hpp"
 #include "Slider.hpp"
+#include "ToggleButton.hpp"
 
 class Window {
     public:
@@ -19,6 +20,7 @@ class Window {
 
         Visualizer *vis;
         Slider *sizeSlider;
+        ToggleButton *startSorting;
 
         void DrawArray();
 };

@@ -1,6 +1,4 @@
 #include "../include/Slider.hpp"
-#include <iostream>
-#include <raylib.h>
 
 Slider::Slider(float x, float y, float width, float height, Color color, int lineThicknes, Vector2 range, int startValue) :
     RECT({ x, y, width, height }), color(color), range(range), lineThickness(lineThicknes), value(startValue) {}
@@ -8,7 +6,7 @@ Slider::Slider(float x, float y, float width, float height, Color color, int lin
 Slider::Slider(Rectangle rect, Color color, int lineThicknes, Vector2 range, int startValue) : 
     RECT(rect), color(color), lineThickness(lineThicknes), range(range), value(startValue) {}
 
-void Slider::Draw() {
+void Slider::Draw() { 
     float handleWidth = lineThickness * 10;
     handleBox = Rectangle{RECT.x + getValuePercentage() * (RECT.width - handleWidth), RECT.y, handleWidth, RECT.height};
 

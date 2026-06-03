@@ -1,4 +1,5 @@
 #include <vector>
+#include <raylib.h>
 #include <random>
 
 class Visualizer {
@@ -8,7 +9,7 @@ class Visualizer {
         void RandomizeArray();
         void Resize(int size);
 
-        bool isSorting() const;
+        bool shouldSorting(bool shuoldSort) const;
         bool isSorted() const;
         int getArraySize() const;
         float getArrayNumber(int index) const;

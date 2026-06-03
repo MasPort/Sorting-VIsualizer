@@ -25,7 +25,8 @@ void Window::Draw()
     sizeSlider->Resize(sliderRect);
 
     sizeSlider->Draw();
-    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) || IsMouseButtonUp(MOUSE_BUTTON_LEFT)) sizeSlider->onSliding(GetMousePosition());
+    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) || IsMouseButtonUp(MOUSE_BUTTON_LEFT)) 
+        sizeSlider->onSliding(GetMousePosition());
 
     algorithmsRect = Rectangle{ 0, 0, rectPercent * width, (float)height };
 
@@ -39,6 +40,8 @@ void Window::DrawArray() {
     float x = algorithmsRect.width; float y = optionsRect.height;
     float sortWidth = width - algorithmsRect.width; float sortHeight = height - optionsRect.height;
 
+    if (sizeSlider->getValue() != vis->getArraySize()) vis->Resize(sizeSlider->getValue());
+
     if (!vis->isSorting()) {
         int maxSize = vis->getArraySize();
         float x_step = sortWidth / maxSize;
@@ -47,7 +50,7 @@ void Window::DrawArray() {
             float rectHeight = sortHeight * vis->getArrayNumber(i);
             DrawRectanglePro(
                     Rectangle{x + (x_step * i), y + (sortHeight - rectHeight), x_step, rectHeight},
-                    { 0.0f, 0.0f }, 0.0f, WHITE);
+                    { 0.0f, 0.0f }, 0.0f, vis->isSorted() ? GREEN : WHITE);
         }
     }
 }

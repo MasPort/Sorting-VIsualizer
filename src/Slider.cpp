@@ -42,6 +42,10 @@ void Slider::onSliding(Vector2 mousePos) {
     }
 }
 
+int Slider::getValue() {
+    return value;
+}
+
 float Slider::getValuePercentage() {
     return (value - range.x)/(range.y - range.x);
 }
@@ -52,5 +56,4 @@ bool Slider::isHovered(Vector2 mousePos) {
 
 void Slider::setValueWithPercentage(double percentage) {
     value = percentage * (range.y - range.x) + range.x;
-    std::cout << "Value: " << value << std::endl;
 }

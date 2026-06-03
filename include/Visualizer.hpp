@@ -6,7 +6,10 @@ class Visualizer {
         Visualizer();
 
         void RandomizeArray();
+        void Resize(int size);
+
         bool isSorting() const;
+        bool isSorted() const;
         int getArraySize() const;
         float getArrayNumber(int index) const;
 

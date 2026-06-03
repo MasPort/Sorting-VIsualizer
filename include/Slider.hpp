@@ -9,6 +9,8 @@ class Slider {
         void Resize(Rectangle newRect);
         void onSliding(Vector2 mousePos);
 
+        int getValue();
+
     private:
         Rectangle RECT;
         Rectangle handleBox;

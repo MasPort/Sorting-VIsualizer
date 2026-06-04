@@ -9,7 +9,7 @@ Window::Window(int width, int height, const char *title, const float visPercent)
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
     InitWindow(width, height, title);
 
-    SetTargetFPS(60);
+    SetTargetFPS(600);
 
     SetAudioStreamBufferSizeDefault(2048);
     InitAudioDevice();
@@ -94,7 +94,8 @@ void Window::DrawArray() {
         vis->SortStep();
 
         for (int value : vis->getComparingIndices()) {
-            float freq = 2 + value * 10;
+            float freq = 2 * std::lerp(0.5f, 1.0f, ((value - 0.0f) / ((float)vis->getArraySize() - 0.0f)) * (470.0f - 0.0f));
+            std::cout << freq << std::endl;
             PlayTone(freq, 1.0f);
         }
     }
@@ -118,7 +119,9 @@ void Window::PlayTone(float frequency, float duration) {
     for (int i = 0; i < sampleCount; ++i) {
         float envelope = 1.0f;
         int fadeLength = sampleCount / 2;
-        if (i > sampleCount - fadeLength)
+        if (i < fadeLength)
+            envelope = (float)i / fadeLength;
+        else if (i > sampleCount - fadeLength)
             envelope = (float)(sampleCount - i) / fadeLength;
 
         samples[i] = 32000 * envelope * sinf(2 * PI * frequency * (i + phase) / 44100);

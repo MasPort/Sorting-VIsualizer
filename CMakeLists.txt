@@ -18,7 +18,9 @@ set(SOURCE_FILES
     src/Visualizer.cpp
     src/Slider.cpp
     src/Window.cpp
-    src/ToggleButton.cpp)
+    src/ToggleButton.cpp
+    src/Button.cpp
+    src/sortingAlgorithms/BubbleSort.cpp)
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 target_link_libraries(${PROJECT_NAME} raylib)

@@ -10,6 +10,7 @@ class ToggleButton {
 
         bool isActivated() const; 
         void onPress(Vector2 mousePos);
+        void setState(bool state);
 
     private:
         Rectangle buttonRect;

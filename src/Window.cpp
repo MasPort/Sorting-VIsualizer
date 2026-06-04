@@ -1,5 +1,4 @@
 #include "../include/Window.hpp"
-#include <iostream>
 #include <raylib.h>
 
 Window::Window(int width, int height, const char *title, const float visPercent) : width(width), height(height), title(title), visPercent(visPercent)
@@ -7,13 +6,13 @@ Window::Window(int width, int height, const char *title, const float visPercent)
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
     InitWindow(width, height, title);
 
-    SetTargetFPS(60);
+    SetTargetFPS(140);
 
     vis = new Visualizer();
     vis->RandomizeArray();
     
-    sizeSlider = new Slider(Rectangle{0, 0, 0, 0}, WHITE, 3, {10, 1000}, 100);
-    startSorting = new ToggleButton(Rectangle{0, 0, 0, 0}, WHITE, 3, "Stop", "Start");
+    sizeSlider = new Slider(Rectangle{0, 0, 0, 0}, WHITE, 3, {10, 100}, 100);
+    startSortingButton = new ToggleButton(Rectangle{0, 0, 0, 0}, WHITE, 3, "Stop", "Start");
 }
 
 void Window::Draw()
@@ -27,10 +26,13 @@ void Window::Draw()
     sizeSlider->Draw(); 
 
     int fontSize = 96;
-    Rectangle startButtonRect{sliderRect.x + sliderRect.width + xPadding * 2, yPadding, (float)MeasureText("Start", fontSize), (float)fontSize};
+    Rectangle startButtonRect{sliderRect.x + sliderRect.width + xPadding * 2, yPadding, (float)MeasureText("Start", fontSize/2), (float)fontSize/2};
+    Rectangle randomizeButtonRect{sliderRect.x + sliderRect.width + xPadding * 2, yPadding + startButtonRect.height, (float)MeasureText("Rand", fontSize/2), (float)fontSize/2};
 
-    startSorting->Resize(startButtonRect);
-    startSorting->Draw();
+    randomizeButton->Resize(randomizeButtonRect);
+    randomizeButton->Draw();
+    startSortingButton->Resize(startButtonRect);
+    startSortingButton->Draw();
 
     algorithmsRect = Rectangle{ 0, 0, rectPercent * width, (float)height };
 
@@ -41,7 +43,8 @@ void Window::Draw()
         sizeSlider->onSliding(GetMousePosition());
 
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-        startSorting->onPress(GetMousePosition());
+        startSortingButton->onPress(GetMousePosition());
+        randomizeButton->isPressed(GetMousePosition());
     }
     
     DrawArray(); 
@@ -51,19 +54,23 @@ void Window::DrawArray() {
     float x = algorithmsRect.width; float y = optionsRect.height;
     float sortWidth = width - algorithmsRect.width; float sortHeight = height - optionsRect.height;
 
-    if (sizeSlider->getValue() != vis->getArraySize()) vis->Resize(sizeSlider->getValue());
+    if (sizeSlider->getValue() != vis->getArraySize()) { 
+        vis->Resize(sizeSlider->getValue()); 
+        startSortingButton->setState(false);
+    }
 
-    if (true) {
-        if (startSorting->isActivated()) vis->RandomizeArray();
-        int maxSize = vis->getArraySize();
-        float x_step = sortWidth / maxSize;
+    int maxSize = vis->getArraySize();
+    float x_step = sortWidth / maxSize;
 
-        for (int i = 0; i < maxSize; ++i) {
-            float rectHeight = sortHeight * vis->getArrayNumber(i);
-            DrawRectanglePro(
-                    Rectangle{x + (x_step * i), y + (sortHeight - rectHeight), x_step, rectHeight},
-                    { 0.0f, 0.0f }, 0.0f, vis->isSorted() ? GREEN : WHITE);
-        }
+    if (startSortingButton->isActivated() && !vis->isSorted())
+        vis->SortStep();
+
+    for (int i = 0; i < maxSize; ++i) {
+        float rectHeight = sortHeight * vis->getArrayNumber(i);
+        Color color = vis->isSorted() ? GREEN : vis->isComparing(i) ? RED : WHITE;
+        DrawRectanglePro(
+                Rectangle{x + (x_step * i), y + (sortHeight - rectHeight), x_step, rectHeight},
+                { 0.0f, 0.0f }, 0.0f, color);
     }
 }
 

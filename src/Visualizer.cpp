@@ -1,6 +1,8 @@
 #include "../include/Visualizer.hpp"
 
-Visualizer::Visualizer() : arraySize(100), sorting(false) {}
+Visualizer::Visualizer() : arraySize(100), sorting(false) {
+    sortAlgorithm = new BubbleSort(array, arraySize, comparingIndices);
+}
 
 void Visualizer::RandomizeArray() {
     std::mt19937 generator(std::random_device{}());
@@ -13,7 +15,13 @@ void Visualizer::RandomizeArray() {
 
 void Visualizer::Resize(int size) {
     arraySize = size;
+    comparingIndices.clear();
+    sortAlgorithm = new BubbleSort(array, arraySize, comparingIndices);
     RandomizeArray();
+}
+
+void Visualizer::SortStep() {
+    sortAlgorithm->sortStep();
 }
 
 bool Visualizer::shouldSorting(bool shouldSort) const { return sorting; }
@@ -28,3 +36,7 @@ bool Visualizer::isSorted() const {
 int Visualizer::getArraySize() const { return arraySize; }
 
 float Visualizer::getArrayNumber(int index) const { return array.at(index); }
+
+bool Visualizer::isComparing(int index) const {
+    return comparingIndices.count(index) > 0;
+}

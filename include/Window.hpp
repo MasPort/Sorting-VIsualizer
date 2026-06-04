@@ -2,6 +2,7 @@
 #include "Visualizer.hpp"
 #include "Slider.hpp"
 #include "ToggleButton.hpp"
+#include "Button.hpp"
 
 class Window {
     public:
@@ -20,7 +21,8 @@ class Window {
 
         Visualizer *vis;
         Slider *sizeSlider;
-        ToggleButton *startSorting;
+        ToggleButton *startSortingButton;
+        Button *randomizeButton;
 
         void DrawArray();
 };

@@ -30,3 +30,7 @@ bool ToggleButton::isActivated() const {
 void ToggleButton::onPress(Vector2 mousePos) {
     if (isHovered(mousePos)) Toggle();
 }
+
+void ToggleButton::setState(bool state) {
+    isActive = state;
+}

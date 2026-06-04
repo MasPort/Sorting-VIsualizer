@@ -13,6 +13,7 @@ Window::Window(int width, int height, const char *title, const float visPercent)
     
     sizeSlider = new Slider(Rectangle{0, 0, 0, 0}, WHITE, 3, {10, 100}, 100);
     startSortingButton = new ToggleButton(Rectangle{0, 0, 0, 0}, WHITE, 3, "Stop", "Start");
+    randomizeButton = new Button(Rectangle{0, 0, 0, 0}, WHITE, 3, "Randomize");
 }
 
 void Window::Draw()
@@ -27,7 +28,7 @@ void Window::Draw()
 
     int fontSize = 96;
     Rectangle startButtonRect{sliderRect.x + sliderRect.width + xPadding * 2, yPadding, (float)MeasureText("Start", fontSize/2), (float)fontSize/2};
-    Rectangle randomizeButtonRect{sliderRect.x + sliderRect.width + xPadding * 2, yPadding + startButtonRect.height, (float)MeasureText("Rand", fontSize/2), (float)fontSize/2};
+    Rectangle randomizeButtonRect{sliderRect.x + sliderRect.width + xPadding * 2, yPadding + startButtonRect.height, (float)MeasureText("Randomize", fontSize/2), (float)fontSize/2};
 
     randomizeButton->Resize(randomizeButtonRect);
     randomizeButton->Draw();
@@ -44,7 +45,7 @@ void Window::Draw()
 
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
         startSortingButton->onPress(GetMousePosition());
-        randomizeButton->isPressed(GetMousePosition());
+        if (randomizeButton->isPressed(GetMousePosition())) vis->RandomizeArray();
     }
     
     DrawArray(); 

@@ -8,16 +8,20 @@ void Visualizer::RandomizeArray() {
     std::mt19937 generator(std::random_device{}());
     std::uniform_real_distribution<float> dist(0.0f, 1.0f);
 
-    array.clear();
-    for (int i = 0; i < arraySize; ++i)
-        array.push_back(dist(generator));
+    if (array.empty())
+        for (int i = 0; i < arraySize; ++i)
+            array.push_back(dist(generator));
+    else 
+        for (int i = 0; i < arraySize; ++i) 
+            array[i] = dist(generator);
+
+    Resize(arraySize);
 }
 
 void Visualizer::Resize(int size) {
     arraySize = size;
     comparingIndices.clear();
     sortAlgorithm = new BubbleSort(array, arraySize, comparingIndices);
-    RandomizeArray();
 }
 
 void Visualizer::SortStep() {

@@ -20,6 +20,7 @@ class Visualizer {
         bool isSorted() const;
         int getArraySize() const;
         float getArrayNumber(int index) const;
+        std::set<int> getComparingIndices() const;
         bool isComparing(int index) const;
 
     private:

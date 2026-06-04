@@ -1,5 +1,8 @@
 #include "../include/Window.hpp"
+#include <cmath>
+#include <cstdlib>
 #include <iostream>
+#include <raylib.h>
 
 Window::Window(int width, int height, const char *title, const float visPercent) : width(width), height(height), title(title), visPercent(visPercent)
 {
@@ -7,6 +10,12 @@ Window::Window(int width, int height, const char *title, const float visPercent)
     InitWindow(width, height, title);
 
     SetTargetFPS(60);
+
+    SetAudioStreamBufferSizeDefault(2048);
+    InitAudioDevice();
+    audioStream = LoadAudioStream(44100, 16, 1);
+    PlayAudioStream(audioStream);
+    phase = 0;
 
     vis = new Visualizer();
     vis->RandomizeArray();
@@ -81,8 +90,14 @@ void Window::DrawArray() {
     int maxSize = vis->getArraySize();
     float x_step = sortWidth / maxSize;
 
-    if (startSortingButton->isActivated() && !vis->isSorted())
+    if (startSortingButton->isActivated() && !vis->isSorted()) {
         vis->SortStep();
+
+        for (int value : vis->getComparingIndices()) {
+            float freq = 2 + value * 10;
+            PlayTone(freq, 1.0f);
+        }
+    }
 
     for (int i = 0; i < maxSize; ++i) {
         float rectHeight = sortHeight * vis->getArrayNumber(i);
@@ -91,6 +106,26 @@ void Window::DrawArray() {
                 Rectangle{x + (x_step * i), y + (sortHeight - rectHeight), x_step, rectHeight},
                 { 0.0f, 0.0f }, 0.0f, color);
     }
+}
+
+void Window::PlayTone(float frequency, float duration) {
+    if (!IsAudioStreamProcessed(audioStream)) return;
+
+    int sampleRate = 2048;
+    int sampleCount = sampleRate * duration;
+    short samples[sampleCount];
+
+    for (int i = 0; i < sampleCount; ++i) {
+        float envelope = 1.0f;
+        int fadeLength = sampleCount / 2;
+        if (i > sampleCount - fadeLength)
+            envelope = (float)(sampleCount - i) / fadeLength;
+
+        samples[i] = 32000 * envelope * sinf(2 * PI * frequency * (i + phase) / 44100);
+    }
+    phase += sampleCount;
+
+    UpdateAudioStream(audioStream, samples, sampleCount);
 }
 
 void Window::Resize()

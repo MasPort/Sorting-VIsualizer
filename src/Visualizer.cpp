@@ -37,6 +37,7 @@ void Visualizer::RandomizeArray() {
     else 
         for (int i = 0; i < arraySize; ++i) 
             array.at(i) = dist(generator);
+    sortAlgorithm->Reset();
 }
 
 void Visualizer::Resize(int size) {
@@ -73,6 +74,8 @@ bool Visualizer::isSorted() const {
 int Visualizer::getArraySize() const { return arraySize; }
 
 float Visualizer::getArrayNumber(int index) const { return array.at(index); }
+
+std::set<int> Visualizer::getComparingIndices() const { return comparingIndices; }
 
 bool Visualizer::isComparing(int index) const {
     return comparingIndices.count(index) > 0;

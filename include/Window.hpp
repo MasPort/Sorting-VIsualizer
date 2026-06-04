@@ -26,5 +26,9 @@ class Window {
         Button *randomizeButton;
         std::vector<Button*> algorithmButtons;
 
+        AudioStream audioStream;
+        unsigned int phase;
+
         void DrawArray();
+        void PlayTone(float frequency, float duration);
 };

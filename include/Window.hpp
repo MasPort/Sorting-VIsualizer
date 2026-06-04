@@ -23,6 +23,7 @@ class Window {
         Slider *sizeSlider;
         ToggleButton *startSortingButton;
         Button *randomizeButton;
+        std::vector<Button*> algorithmButtons;
 
         void DrawArray();
 };

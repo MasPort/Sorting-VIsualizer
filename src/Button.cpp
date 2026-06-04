@@ -13,6 +13,10 @@ void Button::Resize(Rectangle newRect) {
     buttonRect = newRect;
 }
 
+void Button::SetText(const char *text) {
+    this->text = text;
+}
+
 bool Button::isHovered(Vector2 mousePos) const {
     return CheckCollisionPointRec(mousePos, buttonRect);
 }

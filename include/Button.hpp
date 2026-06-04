@@ -6,6 +6,7 @@ class Button {
 
         void Draw() const;
         void Resize(Rectangle newRect);
+        void SetText(const char *text);
 
         bool isPressed(Vector2 mousePos);
 

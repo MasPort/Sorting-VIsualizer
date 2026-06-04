@@ -1,7 +1,16 @@
 #include "../include/Visualizer.hpp"
 
 Visualizer::Visualizer() : arraySize(100), sorting(false) {
-    sortAlgorithm = new BubbleSort(array, arraySize, comparingIndices);
+    sortingAlgorithms = {
+        new BubbleSort(array, arraySize, comparingIndices),
+    };
+
+    sortAlgPrettyNames = {
+        "Bubble",
+    };
+
+    sortAlgIndex = 0;
+    sortAlgorithm = sortingAlgorithms.at(sortAlgIndex);
 }
 
 void Visualizer::RandomizeArray() {
@@ -13,7 +22,7 @@ void Visualizer::RandomizeArray() {
             array.push_back(dist(generator));
     else 
         for (int i = 0; i < arraySize; ++i) 
-            array[i] = dist(generator);
+            array.at(i) = dist(generator);
 
     Resize(arraySize);
 }
@@ -21,11 +30,19 @@ void Visualizer::RandomizeArray() {
 void Visualizer::Resize(int size) {
     arraySize = size;
     comparingIndices.clear();
-    sortAlgorithm = new BubbleSort(array, arraySize, comparingIndices);
+    sortAlgorithm = sortingAlgorithms.at(sortAlgIndex);
+    sortAlgorithm->Reset(arraySize);
 }
 
 void Visualizer::SortStep() {
     sortAlgorithm->sortStep();
+}
+
+void Visualizer::SetAlgorithm(int index) {
+    comparingIndices.clear();
+    sortAlgIndex = index;
+    sortAlgorithm = sortingAlgorithms.at(sortAlgIndex);
+    sortAlgorithm->Reset(arraySize);
 }
 
 bool Visualizer::shouldSorting(bool shouldSort) const { return sorting; }

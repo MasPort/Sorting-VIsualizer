@@ -1,5 +1,6 @@
 #include "../include/Window.hpp"
 #include <raylib.h>
+#include <string>
 
 Window::Window(int width, int height, const char *title, const float visPercent) : width(width), height(height), title(title), visPercent(visPercent)
 {
@@ -10,10 +11,11 @@ Window::Window(int width, int height, const char *title, const float visPercent)
 
     vis = new Visualizer();
     vis->RandomizeArray();
-    
+
     sizeSlider = new Slider(Rectangle{0, 0, 0, 0}, WHITE, 3, {10, 100}, 100);
     startSortingButton = new ToggleButton(Rectangle{0, 0, 0, 0}, WHITE, 3, "Stop", "Start");
     randomizeButton = new Button(Rectangle{0, 0, 0, 0}, WHITE, 3, "Randomize");
+    algorithmButtons = {};
 }
 
 void Window::Draw()
@@ -21,14 +23,14 @@ void Window::Draw()
     float rectPercent = 1 - visPercent; int lineThickness = 3;
     optionsRect = Rectangle{ rectPercent * width - lineThickness, 0, visPercent * width, rectPercent * height };
 
-    float xPadding = lineThickness + 10; float yPadding = lineThickness + optionsRect.height / 4;
-    Rectangle sliderRect{optionsRect.x + xPadding, yPadding, 400, optionsRect.height - yPadding * 2}; 
+    float xPadding = lineThickness + 10; float yPaddingOptions = lineThickness + optionsRect.height / 4; float yPaddingAlgorithm = lineThickness + 10;
+    Rectangle sliderRect{optionsRect.x + xPadding, yPaddingOptions, 400, optionsRect.height - yPaddingOptions * 2}; 
     sizeSlider->Resize(sliderRect); 
     sizeSlider->Draw(); 
 
     int fontSize = 96;
-    Rectangle startButtonRect{sliderRect.x + sliderRect.width + xPadding * 2, yPadding, (float)MeasureText("Start", fontSize/2), (float)fontSize/2};
-    Rectangle randomizeButtonRect{sliderRect.x + sliderRect.width + xPadding * 2, yPadding + startButtonRect.height, (float)MeasureText("Randomize", fontSize/2), (float)fontSize/2};
+    Rectangle startButtonRect{sliderRect.x + sliderRect.width + xPadding * 2, yPaddingOptions, (float)MeasureText("Start", fontSize/2), (float)fontSize/2};
+    Rectangle randomizeButtonRect{sliderRect.x + sliderRect.width + xPadding * 2, yPaddingOptions + startButtonRect.height, (float)MeasureText("Randomize", fontSize/2), (float)fontSize/2};
 
     randomizeButton->Resize(randomizeButtonRect);
     randomizeButton->Draw();
@@ -36,6 +38,19 @@ void Window::Draw()
     startSortingButton->Draw();
 
     algorithmsRect = Rectangle{ 0, 0, rectPercent * width, (float)height };
+
+    int index = 0; fontSize = fontSize / 2;
+    for (std::string sortAlg : vis->sortAlgPrettyNames) {
+        Rectangle algorithmButtonRect{xPadding, yPaddingAlgorithm + index * (fontSize + yPaddingAlgorithm), algorithmsRect.width - 2 * xPadding, (float)fontSize};
+
+        if (algorithmButtons.size() <= index) 
+            algorithmButtons.insert(algorithmButtons.cbegin() + index, new Button(algorithmButtonRect, WHITE, lineThickness, sortAlg.c_str()));
+
+        algorithmButtons.at(index)->Resize(algorithmButtonRect);
+        algorithmButtons.at(index)->Draw();
+
+        ++index;
+    }
 
     DrawRectangleLinesEx(optionsRect, lineThickness, WHITE);
     DrawRectangleLinesEx(algorithmsRect, lineThickness, WHITE);
@@ -46,6 +61,11 @@ void Window::Draw()
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
         startSortingButton->onPress(GetMousePosition());
         if (randomizeButton->isPressed(GetMousePosition())) vis->RandomizeArray();
+
+        for (int i = 0; i < algorithmButtons.size() - 1; ++i) {
+            if (algorithmButtons.at(i)->isPressed(GetMousePosition()))
+                vis->SetAlgorithm(i);
+        }
     }
     
     DrawArray(); 

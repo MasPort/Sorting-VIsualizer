@@ -1,3 +1,4 @@
+#include <string>
 #include <vector>
 #include <raylib.h>
 #include <random>
@@ -7,11 +8,14 @@
 
 class Visualizer {
     public:
+        std::vector<std::string> sortAlgPrettyNames;
+
         Visualizer();
 
         void RandomizeArray();
         void Resize(int size);
         void SortStep();
+        void SetAlgorithm(int index);
 
         bool shouldSorting(bool shuoldSort) const;
         bool isSorted() const;
@@ -23,7 +27,10 @@ class Visualizer {
         std::vector<float> array;
         int arraySize;
         bool sorting;
-        std::set<int> comparingIndices;
 
+        std::set<int> comparingIndices;
+        std::vector<SortAlgorithm*> sortingAlgorithms;
         SortAlgorithm *sortAlgorithm;
+        
+        int sortAlgIndex;
 };

@@ -18,3 +18,9 @@ void BubbleSort::sortStep() {
         --lastIndex;
     }
 }
+
+void BubbleSort::Reset(int arraySize) {
+    this->arraySize = arraySize;
+    lastIndex = this->arraySize - 1;
+    currentIndex = 0;
+}

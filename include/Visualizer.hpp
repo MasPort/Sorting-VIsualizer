@@ -1,10 +1,9 @@
 #include <string>
 #include <vector>
 #include <raylib.h>
-#include <random>
 #include <set>
 
-#include "./sortingAlgorithms/BubbleSort.hpp"
+#include "SortAlgorithm.hpp"
 
 class Visualizer {
     public:

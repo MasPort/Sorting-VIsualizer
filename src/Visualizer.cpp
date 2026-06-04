@@ -1,12 +1,23 @@
 #include "../include/Visualizer.hpp"
 
+#include <random>
+#include <iostream>
+
+#include "../include/sortingAlgorithms/BubbleSort.hpp"
+#include "../include/sortingAlgorithms/SelectionSort.hpp"
+#include "../include/sortingAlgorithms/InsertionSort.hpp"
+
 Visualizer::Visualizer() : arraySize(100), sorting(false) {
     sortingAlgorithms = {
         new BubbleSort(array, arraySize, comparingIndices),
+        new SelectionSort(array, arraySize, comparingIndices),
+        new InsertionSort(array, arraySize, comparingIndices)
     };
 
     sortAlgPrettyNames = {
         "Bubble",
+        "Selection",
+        "Insertion"
     };
 
     sortAlgIndex = 0;
@@ -23,15 +34,17 @@ void Visualizer::RandomizeArray() {
     else 
         for (int i = 0; i < arraySize; ++i) 
             array.at(i) = dist(generator);
-
-    Resize(arraySize);
 }
 
 void Visualizer::Resize(int size) {
     arraySize = size;
+    array.resize(arraySize);
+
     comparingIndices.clear();
     sortAlgorithm = sortingAlgorithms.at(sortAlgIndex);
-    sortAlgorithm->Reset(arraySize);
+    sortAlgorithm->Reset();
+
+    RandomizeArray();
 }
 
 void Visualizer::SortStep() {
@@ -42,7 +55,7 @@ void Visualizer::SetAlgorithm(int index) {
     comparingIndices.clear();
     sortAlgIndex = index;
     sortAlgorithm = sortingAlgorithms.at(sortAlgIndex);
-    sortAlgorithm->Reset(arraySize);
+    sortAlgorithm->Reset();
 }
 
 bool Visualizer::shouldSorting(bool shouldSort) const { return sorting; }

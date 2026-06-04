@@ -1,16 +1,17 @@
 #include "../include/Window.hpp"
+#include <iostream>
 
 Window::Window(int width, int height, const char *title, const float visPercent) : width(width), height(height), title(title), visPercent(visPercent)
 {
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
     InitWindow(width, height, title);
 
-    SetTargetFPS(140);
+    SetTargetFPS(60);
 
     vis = new Visualizer();
     vis->RandomizeArray();
 
-    sizeSlider = new Slider(Rectangle{0, 0, 0, 0}, WHITE, 3, {10, 100}, 100);
+    sizeSlider = new Slider(Rectangle{0, 0, 0, 0}, WHITE, 3, {10, 1000}, 100);
     startSortingButton = new ToggleButton(Rectangle{0, 0, 0, 0}, WHITE, 3, "Stop", "Start");
     randomizeButton = new Button(Rectangle{0, 0, 0, 0}, WHITE, 3, "Randomize");
     algorithmButtons = {};
@@ -60,9 +61,10 @@ void Window::Draw()
         startSortingButton->onPress(GetMousePosition());
         if (randomizeButton->isPressed(GetMousePosition())) vis->RandomizeArray();
 
-        for (int i = 0; i < algorithmButtons.size() - 1; ++i) {
-            if (algorithmButtons.at(i)->isPressed(GetMousePosition()))
+        for (int i = 0; i < algorithmButtons.size(); ++i) {
+            if (algorithmButtons.at(i)->isPressed(GetMousePosition())) {
                 vis->SetAlgorithm(i);
+            }
         }
     }
     
@@ -73,10 +75,8 @@ void Window::DrawArray() {
     float x = algorithmsRect.width; float y = optionsRect.height;
     float sortWidth = width - algorithmsRect.width; float sortHeight = height - optionsRect.height;
 
-    if (sizeSlider->getValue() != vis->getArraySize()) { 
+    if (sizeSlider->getValue() != vis->getArraySize())
         vis->Resize(sizeSlider->getValue()); 
-        startSortingButton->setState(false);
-    }
 
     int maxSize = vis->getArraySize();
     float x_step = sortWidth / maxSize;

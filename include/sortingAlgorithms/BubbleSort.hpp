@@ -1,3 +1,4 @@
+#pragma once
 #include "../SortAlgorithm.hpp"
 
 class BubbleSort : public SortAlgorithm {
@@ -5,7 +6,7 @@ class BubbleSort : public SortAlgorithm {
         BubbleSort(std::vector<float> &array, int &arraySize, std::set<int> &comparingIndices) :
             SortAlgorithm(array, arraySize, comparingIndices), lastIndex(arraySize - 1), currentIndex(0) {}
         void sortStep();
-        void Reset(int arraySize);
+        void Reset();
 
     private:
         int lastIndex;

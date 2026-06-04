@@ -6,18 +6,21 @@
 #include "../include/sortingAlgorithms/BubbleSort.hpp"
 #include "../include/sortingAlgorithms/SelectionSort.hpp"
 #include "../include/sortingAlgorithms/InsertionSort.hpp"
+#include "../include/sortingAlgorithms/ShellSort.hpp"
 
 Visualizer::Visualizer() : arraySize(100), sorting(false) {
     sortingAlgorithms = {
         new BubbleSort(array, arraySize, comparingIndices),
         new SelectionSort(array, arraySize, comparingIndices),
-        new InsertionSort(array, arraySize, comparingIndices)
+        new InsertionSort(array, arraySize, comparingIndices),
+        new ShellSort(array, arraySize, comparingIndices)
     };
 
     sortAlgPrettyNames = {
         "Bubble",
         "Selection",
-        "Insertion"
+        "Insertion",
+        "Shell"
     };
 
     sortAlgIndex = 0;

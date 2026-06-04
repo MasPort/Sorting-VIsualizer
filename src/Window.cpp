@@ -1,6 +1,4 @@
 #include "../include/Window.hpp"
-#include <raylib.h>
-#include <string>
 
 Window::Window(int width, int height, const char *title, const float visPercent) : width(width), height(height), title(title), visPercent(visPercent)
 {

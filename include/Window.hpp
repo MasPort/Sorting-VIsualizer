@@ -1,8 +1,9 @@
 #include <raylib.h>
+
 #include "Visualizer.hpp"
-#include "Slider.hpp"
-#include "ToggleButton.hpp"
-#include "Button.hpp"
+#include "./windowWidgets/Slider.hpp"
+#include "./windowWidgets/ToggleButton.hpp"
+#include "./windowWidgets/Button.hpp"
 
 class Window {
     public:

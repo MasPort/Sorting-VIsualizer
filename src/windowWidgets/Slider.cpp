@@ -1,4 +1,4 @@
-#include "../include/Slider.hpp"
+#include "../../include/windowWidgets/Slider.hpp"
 
 Slider::Slider(float x, float y, float width, float height, Color color, int lineThicknes, Vector2 range, int startValue) :
     RECT({ x, y, width, height }), color(color), range(range), lineThickness(lineThicknes), value(startValue) {}

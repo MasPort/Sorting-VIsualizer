@@ -13,20 +13,11 @@ FetchContent_Declare(
 set(BUILD_EXAMPLES OFF CACHE INTERNAL "")
 FetchContent_MakeAvailable(raylib)
 
-set(SOURCE_FILES
-    src/main.cpp
-    src/Visualizer.cpp
-    src/Slider.cpp
-    src/Window.cpp
-    src/ToggleButton.cpp
-    src/Button.cpp
-    src/sortingAlgorithms/BubbleSort.cpp)
+file(GLOB_RECURSE SOURCE_FILES src/*.cpp)
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 target_link_libraries(${PROJECT_NAME} raylib)
 
-set(INCLUDE_DIRECTORY include/)
-set(HEADER_FILES ${INCLUDE_DIRECTORY}/Visualizer.hpp)
 target_include_directories(${PROJECT_NAME} PRIVATE
-    ${INCLUDE_DIRECTORY}
+    include/
 )

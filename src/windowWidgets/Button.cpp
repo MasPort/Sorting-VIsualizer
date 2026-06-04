@@ -1,4 +1,4 @@
-#include "../include/Button.hpp"
+#include "../../include/windowWidgets/Button.hpp"
 
 Button::Button(Rectangle buttonRect, Color color, int lineThickness, const char *text) :
     buttonRect(buttonRect), color(color), lineThickness(lineThickness), text(text) {}
